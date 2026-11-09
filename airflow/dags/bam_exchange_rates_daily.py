@@ -33,7 +33,7 @@ default_args = {
 with DAG(
     dag_id="bam_exchange_rates_daily",
     description="Bank Al-Maghrib exchange rates: extract, load, transform.",
-    schedule="0 13 * * 1-5",
+    schedule="0 14 * * 1-5",  # weekdays 14:00, after the 12:30 publication
     start_date=pendulum.datetime(2026, 11, 1, tz="Africa/Casablanca"),
     catchup=False,
     max_active_runs=1,  # never 2 runs at once (API rate limit)
