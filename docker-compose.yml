@@ -44,5 +44,24 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - .:/opt/airflow/project
 
+  metabase:
+    image: metabase/metabase:v0.64.5.5
+    container_name: morocco_market_metabase
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Where Metabase stores its own settings (users, dashboards)
+      MB_DB_TYPE: postgres
+      MB_DB_HOST: postgres
+      MB_DB_PORT: 5432
+      MB_DB_DBNAME: metabase
+      MB_DB_USER: ${POSTGRES_USER}
+      MB_DB_PASS: ${POSTGRES_PASSWORD}
+      JAVA_TIMEZONE: Africa/Casablanca
+    ports:
+      - "3000:3000"
+
 volumes:
   postgres_data:
