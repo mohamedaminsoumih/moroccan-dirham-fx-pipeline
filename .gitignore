@@ -12,3 +12,9 @@ __pycache__/
 
 # Data files (produced by the pipeline, not code)
 data/
+
+# dbt generated files
+transform/target/
+transform/dbt_packages/
+transform/logs/
+transform/.user.yml

@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: fct_exchange_rates_daily
+    description: "Daily MAD exchange rates per currency, with daily change."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ["rate_date", "currency_code"]
+    columns:
+      - name: rate_date
+        data_tests: [not_null]
+      - name: currency_code
+        data_tests: [not_null]
+      - name: mid_rate_per_unit_mad
+        description: "Transfer rate for 1 unit of the currency, in MAD."
+        data_tests: [not_null]
+      - name: daily_change_pct
+        description: "Change vs the previous published day, in %."
+
+  - name: agg_exchange_rates_monthly
+    description: "Monthly statistics per currency."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ["month", "currency_code"]
+    columns:
+      - name: avg_mid_rate_mad
+        data_tests: [not_null]
+      - name: volatility_pct
+        description: "Standard deviation of daily changes, in %."

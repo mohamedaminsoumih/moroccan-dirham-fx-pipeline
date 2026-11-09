@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: stg_bam__transfer_rates
+    description: "Daily transfer rates (CoursVirement), one row per currency."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ["rate_date", "currency_code"]
+    columns:
+      - name: rate_date
+        data_tests: [not_null]
+      - name: currency_code
+        data_tests: [not_null]
+      - name: currency_unit
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: false
+      - name: mid_rate_mad
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: false
+
+  - name: stg_bam__banknote_rates
+    description: "Daily banknote buy/sell rates (CoursBBE), one row per currency."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ["rate_date", "currency_code"]
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "sell_rate_mad >= buy_rate_mad"
+    columns:
+      - name: rate_date
+        data_tests: [not_null]
+      - name: currency_code
+        data_tests: [not_null]
+      - name: buy_rate_mad
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: false
+      - name: sell_rate_mad
+        data_tests: [not_null]

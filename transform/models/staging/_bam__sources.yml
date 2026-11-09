@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: bam
+    description: "Bank Al-Maghrib exchange rates API, loaded as raw JSON."
+    schema: raw
+    loaded_at_field: loaded_at
+    freshness:
+      warn_after: { count: 2, period: day }
+      error_after: { count: 4, period: day }
+    tables:
+      - name: bam_rates
+        description: "One row per currency per day, per endpoint."
+        columns:
+          - name: endpoint
+            description: "CoursBBE (banknotes) or CoursVirement (transfers)."
+          - name: rate_date
+            description: "Day the rates apply to."
+          - name: payload
+            description: "Raw JSON row returned by the API."
