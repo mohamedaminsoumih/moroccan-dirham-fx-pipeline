@@ -1,0 +1,14 @@
+# Secrets
+.env
+
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+
+# macOS
+.DS_Store
+
+# Data files (produced by the pipeline, not code)
+data/
