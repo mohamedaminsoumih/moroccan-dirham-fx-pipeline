@@ -6,6 +6,8 @@ in PostgreSQL, cleans and tests them with **dbt**, and serves them to a
 **Metabase** dashboard. Orchestrated daily with **Apache Airflow**,
 fully containerized with **Docker**.
 
+![Moroccan Dirham FX dashboard](docs/dashboard.png)
+
 ## Architecture
 
 ```mermaid
