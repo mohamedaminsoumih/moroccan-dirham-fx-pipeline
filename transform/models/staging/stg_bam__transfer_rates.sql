@@ -21,10 +21,20 @@ typed as (
         loaded_at
     from source
 
+),
+
+-- The API sometimes returns the same currency twice for one day:
+-- keep one row, the latest published
+deduplicated as (
+
+    select distinct on (rate_date, currency_code) *
+    from typed
+    order by rate_date, currency_code, published_at desc
+
 )
 
 select
     *,
     -- Some currencies are quoted per 100 units (e.g. JPY): bring all to 1 unit
     round(mid_rate_mad / currency_unit, 6) as mid_rate_per_unit_mad
-from typed
+from deduplicated
