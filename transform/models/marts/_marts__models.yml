@@ -17,6 +17,14 @@ models:
         data_tests: [not_null]
       - name: daily_change_pct
         description: "Change vs the previous published day, in %."
+        data_tests:
+          # Flags suspicious moves without stopping the pipeline
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: -5
+                max_value: 5
+              config:
+                severity: warn
 
   - name: agg_exchange_rates_monthly
     description: "Monthly statistics per currency."
